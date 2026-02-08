@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://i.ibb.co/HTyGwGhP/TUMSIN-FONDO-1024-X1024.png">
+    <title>Verificador de Agendamientos en linea - TeEchoUnaMano TUM</title>
+    <!-- Added Montserrat font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { 
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Updated color scheme to match professional design files */
+        :root {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --primary-light: rgba(59, 130, 246, 0.1);
+            --secondary: #10b981;
+            --secondary-hover: #059669;
+            --accent: #06b6d4;
+            --accent-hover: #0891b2;
+            --accent-light: rgba(6, 182, 212, 0.1);
+            
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --card-bg: #ffffff;
+            
+            --foreground: #0f172a;
+            --foreground-muted: #475569;
+            --foreground-subtle: #64748b;
+            
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+            
+            --success: #10b981;
+            --error: #ef4444;
+            --error-light: #fef2f2;
+            
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Updated font family to Montserrat */
+        body { 
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            /* Added gradient background matching professional design */
+            background: linear-gradient(to bottom right, #f8fafc, rgba(219, 234, 254, 0.3), rgba(207, 250, 254, 0.3));
+            color: var(--foreground);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        /* Updated header with clean white background and border */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+        }
+
+        header .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        /* Updated logo styling */
+        .logo-img {
+            width: 64px;
+            height: 64px;
+            border-radius: 1rem;
+            background: white;
+            padding: 0.375rem;
+            box-shadow: var(--shadow-lg);
+            border: 2px solid #e2e8f0;
+        }
+
+        /* Updated logo text colors for clean header */
+        .logo-text h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--foreground);
+            margin: 0;
+            line-height: 1.2;
+            letter-spacing: -0.025em;
+        }
+
+        .logo-text p {
+            font-size: 1rem;
+            color: var(--foreground-muted);
+            margin: 0.25rem 0 0 0;
+            font-weight: 500;
+        }
+
+        /* Header actions */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Updated header link button with gradient matching professional design */
+        .header-link {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9375rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.625rem;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .header-link:hover::before {
+            left: 100%;
+        }
+
+        .header-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 30px -4px rgba(59, 130, 246, 0.5);
+        }
+
+        .header-link:active {
+            transform: translateY(-1px);
+        }
+
+        .support-link {
+            background: linear-gradient(135deg, #6B7280, #4B5563);
+            box-shadow: 0 8px 20px -4px rgba(107, 114, 128, 0.4);
+        }
+
+        .support-link:hover {
+            box-shadow: 0 16px 30px -4px rgba(107, 114, 128, 0.5);
+        }
+
+        .whatsapp-link {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            box-shadow: 0 8px 20px -4px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-link:hover {
+            box-shadow: 0 16px 30px -4px rgba(37, 211, 102, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .logo {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .header-link {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .logo-img {
+                width: 56px;
+                height: 56px;
+            }
+
+            .logo-text h1 {
+                font-size: 1.25rem;
+            }
+
+            .logo-text p {
+                font-size: 0.875rem;
+            }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: -3rem -1.5rem 3rem -1.5rem;
+            border-radius: 0 0 3rem 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="rgba(255,255,255,0.1)"><polygon points="0,0 1000,50 1000,100 0,100"/></svg>');
+            background-size: cover;
+        }
+
+        .hero-section h1 {
+            color: white;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .hero-section .subtitle {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.375rem;
+            font-weight: 500;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0.75rem;
+        }
+        
+        .title-section {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        /* Statistics Section - MOBILE OPTIMIZED */
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.25rem 1rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .stat-number {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.375rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--foreground-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            line-height: 1.2;
+        }
+
+        /* Mobile-specific optimizations */
+        @media (max-width: 768px) {
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+                margin: 1.5rem 0;
+            }
+            
+            .stat-card {
+                padding: 1rem 0.75rem;
+                border-radius: 0.75rem;
+                min-height: auto;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .stat-label {
+                font-size: 0.6875rem;
+                letter-spacing: 0.03em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+                margin: 1rem 0;
+            }
+            
+            .stat-card {
+                padding: 0.875rem 0.5rem;
+                border-radius: 0.625rem;
+            }
+            
+            .stat-number {
+                font-size: 1.375rem;
+                margin-bottom: 0.125rem;
+            }
+            
+            .stat-label {
+                font-size: 0.625rem;
+                letter-spacing: 0.02em;
+            }
+        }
+
+        /* Para pantallas muy pequeñas (menos de 360px) */
+        @media (max-width: 360px) {
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.375rem;
+            }
+            
+            .stat-card {
+                padding: 0.75rem 0.375rem;
+            }
+            
+            .stat-number {
+                font-size: 1.25rem;
+            }
+            
+            .stat-label {
+                font-size: 0.5625rem;
+            }
+        }
+        
+        /* Updated badge with fluorescent green and innovative design */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            border: 2px solid #00ff88;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            font-weight: 800;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 136, 0.6),
+                0 0 60px rgba(0, 255, 136, 0.4),
+                0 8px 20px rgba(0, 0, 0, 0.3);
+            animation: neonGlow 2s ease-in-out infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .badge::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.4) 50%,
+                transparent 70%
+            );
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes neonGlow {
+            0% {
+                box-shadow: 
+                    0 0 30px rgba(0, 255, 136, 0.6),
+                    0 0 60px rgba(0, 255, 136, 0.4),
+                    0 8px 20px rgba(0, 0, 0, 0.3);
+            }
+            100% {
+                box-shadow: 
+                    0 0 40px rgba(0, 255, 136, 0.9),
+                    0 0 80px rgba(0, 255, 136, 0.6),
+                    0 0 120px rgba(0, 255, 136, 0.4),
+                    0 8px 20px rgba(0, 0, 0, 0.3);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+        
+        .pulse-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 9999px;
+            background-color: #000;
+            animation: pulseDot 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+            position: relative;
+            z-index: 1;
+        }
+        
+        @keyframes pulseDot {
+            0%, 100% { 
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% { 
+                opacity: 0.7;
+                transform: scale(1.3);
+            }
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            color: var(--foreground);
+            letter-spacing: -0.025em;
+        }
+        
+        .subtitle {
+            color: var(--foreground-muted);
+            font-size: 1.25rem;
+            max-width: 42rem;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        
+        /* Updated search form with professional white card design */
+        .search-form {
+            max-width: 48rem;
+            margin: 0 auto 2rem;
+        }
+
+        .search-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .search-header h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--foreground);
+        }
+
+        .search-header p {
+            color: var(--foreground-muted);
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 1.25rem;
+            flex-direction: column;
+            background: white;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            position: relative;
+        }
+        
+        @media (min-width: 640px) {
+            .search-container {
+                flex-direction: row;
+            }
+        }
+        
+        .input-wrapper {
+            position: relative;
+            flex: 1;
+        }
+        
+        .clear-button {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 9999px;
+            background-color: var(--border);
+            color: var(--foreground-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+        
+        .clear-button:hover {
+            background-color: var(--border-hover);
+            color: var(--foreground);
+        }
+        
+        .clear-button:active {
+            transform: translateY(-50%) scale(0.9);
+        }
+        
+        .clear-button.visible {
+            display: flex;
+        }
+        
+        .clear-button svg {
+            width: 0.875rem;
+            height: 0.875rem;
+        }
+        
+        /* Updated input styling with professional colors */
+        input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1.25rem;
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            border-radius: 0.75rem;
+            font-size: 1.125rem;
+            font-family: inherit;
+            color: var(--foreground);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--surface);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+        
+        /* Updated button with gradient matching professional design */
+        button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.75rem;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            color: white;
+            font-weight: 700;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
+            font-family: inherit;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        @media (min-width: 640px) {
+            button {
+                width: auto;
+                min-width: 220px;
+            }
+        }
+        
+        button:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 16px 30px -4px rgba(59, 130, 246, 0.5);
+        }
+        
+        button:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        button svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .search-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            color: var(--foreground-muted);
+        }
+
+        .search-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .search-footer a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 9999px;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Updated error message styling */
+        .error-message {
+            max-width: 48rem;
+            margin: 0 auto 2rem;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--error);
+            border-radius: 1rem;
+            background: linear-gradient(135deg, var(--error-light), #fef2f2);
+            color: var(--error);
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        /* Grid Layout */
+        .records-grid {
+            display: grid;
+            gap: 2rem;
+        }
+        
+        @media (min-width: 1024px) {
+            .records-grid {
+                grid-template-columns: 2fr 1fr;
+                gap: 2.5rem;
+            }
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--foreground);
+        }
+        
+        .section-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--primary);
+        }
+        
+        /* Added styles for badge container in section header */
+        .section-badges {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-left: auto;
+        }
+        
+        /* Added neon-badge class for fluorescent EN HORA badge in section header */
+        .neon-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            border: 2px solid #00ff88;
+            font-size: 0.8125rem;
+            font-weight: 700;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 136, 0.5),
+                0 0 40px rgba(0, 255, 136, 0.3),
+                0 4px 12px rgba(0, 0, 0, 0.2);
+            animation: neonGlow 2s ease-in-out infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .neon-badge::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.3) 50%,
+                transparent 70%
+            );
+            animation: shimmer 3s infinite;
+        }
+        
+        .neon-badge .pulse-dot-small {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 9999px;
+            background-color: #000;
+            animation: pulseDot 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Updated recent-badge to position on card border */
+        .recent-badge {
+            position: absolute;
+            top: -0.75rem;
+            left: 1.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 800;
+            box-shadow: var(--shadow-lg);
+            z-index: 10;
+            border: 2px solid white;
+        }
+        
+        /* New style for en-hora badge matching sistema en tiempo real badge, positioned on card border */
+        .en-hora-badge {
+            position: absolute;
+            top: -0.75rem;
+            right: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+            border: 2px solid #00ff88;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 136, 0.5),
+                0 0 40px rgba(0, 255, 136, 0.3),
+                0 4px 12px rgba(0, 0, 0, 0.2);
+            animation: neonGlow 2s ease-in-out infinite alternate;
+            overflow: hidden;
+            z-index: 10;
+            border: 2px solid white;
+        }
+        
+        .en-hora-badge::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.3) 50%,
+                transparent 70%
+            );
+            animation: shimmer 3s infinite;
+        }
+        
+        .en-hora-badge .pulse-dot-small {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 9999px;
+            background-color: #000;
+            animation: pulseDot 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Updated record card with professional design matching appointment-card */
+        .record-card {
+            position: relative;
+            border: 2px solid #dbeafe;
+            border-radius: 1rem;
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .record-card:hover {
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary);
+            transform: translateY(-4px);
+        }
+        
+        .record-card:active {
+            transform: scale(0.98);
+        }
+        
+        .record-card.featured {
+            border-color: #bfdbfe;
+            box-shadow: var(--shadow-xl);
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+        }
+        
+        .record-card.featured:hover {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* Updated status badges with gradients matching professional design */
+        .status-badge {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 800;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 2px solid white;
+        }
+        
+        .status-badge.en-hora {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        
+        .status-badge.realizado {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+        
+        .status-badge.pendiente {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+        
+        .field-row {
+            display: flex;
+            align-items: start;
+            gap: 0.875rem;
+            margin-bottom: 0.875rem;
+        }
+        
+        .field-icon {
+            flex-shrink: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, var(--primary-light), #dbeafe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .field-icon svg {
+            width: 1.125rem;
+            height: 1.125rem;
+            color: var(--primary);
+        }
+        
+        .field-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .field-label {
+            font-size: 0.75rem;
+            color: var(--foreground-muted);
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .field-value {
+            font-size: 0.9375rem;
+            font-weight: 700;
+            color: var(--foreground);
+            word-break: break-word;
+            line-height: 1.4;
+        }
+        
+        .view-details {
+            padding-top: 1rem;
+            border-top: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        
+        .view-details span {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .record-card:hover .view-details span {
+            text-decoration: underline;
+        }
+        
+        .chevron-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: var(--primary);
+            transition: transform 0.3s;
+        }
+        
+        .record-card:hover .chevron-icon {
+            transform: translateX(0.5rem);
+        }
+        
+        /* Compact Card */
+        .record-card.compact {
+            padding: 1.25rem;
+        }
+        
+        .compact-content {
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        
+        .compact-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .compact-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .compact-status svg {
+            width: 0.875rem;
+            height: 0.875rem;
+        }
+        
+        .compact-status span {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .compact-name {
+            font-size: 0.9375rem;
+            font-weight: 700;
+            color: var(--foreground);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 0.375rem;
+        }
+        
+        .compact-date {
+            font-size: 0.75rem;
+            color: var(--foreground-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 500;
+        }
+        
+        /* Completely redesigned modal to match clean professional design from image */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-overlay.hidden {
+            display: none;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-sheet {
+            position: relative;
+            background-color: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            padding: 1.5rem;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            z-index: 10;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 9999px;
+            background-color: #f8fafc;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            padding: 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .close-button:hover {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            transform: scale(1.1);
+        }
+
+        .close-button svg {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+        
+        .modal-header-bg {
+            background: linear-gradient(135deg, rgba(248, 250, 252, 0.9), rgba(232, 242, 255, 0.9));
+            border-radius: 1rem 1rem 0 0;
+            padding: 2rem 2rem 1.5rem 2rem;
+            margin: -1.5rem -1.5rem 1.5rem -1.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        /* Added perforated edge effect to create ticket-style separation */
+        .modal-header-bg::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background-image: radial-gradient(circle at 10px 10px, white 10px, transparent 10px);
+            background-size: 30px 20px;
+            background-position: 0 0;
+            background-repeat: repeat-x;
+        }
+
+        .modal-logo {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .modal-logo img {
+            width: 64px;
+            height: 64px;
+            border-radius: 1rem;
+            border: 2px solid #e2e8f0;
+        }
+
+        .modal-header-title {
+            text-align: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-header-title h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-header-title p {
+            font-size: 0.875rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .modal-status-center {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-status-badge-large {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 800;
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-status-badge-large.realizado {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .modal-status-badge-large.en-hora {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .modal-status-badge-large.pendiente {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .modal-status-badge-large svg {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+
+        .modal-body {
+            margin: -1.5rem -1.5rem -1.5rem -1.5rem;
+            padding: 1.5rem;
+        }
+
+        /* MODIFICACIÓN: Nuevo diseño de grid para mostrar 2 campos por fila */
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-field-box {
+            background-color: #f8fafc;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            border: 1px solid #f1f5f9;
+            transition: all 0.2s;
+            min-height: 80px; /* Altura mínima para uniformidad */
+        }
+
+        .modal-field-icon-box {
+            flex-shrink: 0;
+            width: 2.25rem;
+            height: 2.25rem;
+            border-radius: 0.5rem;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6;
+        }
+
+        .modal-field-icon-box svg {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+
+        .modal-field-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .modal-field-label-box {
+            font-size: 0.6875rem;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            line-height: 1.2;
+        }
+
+        .modal-field-value-box {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #0f172a;
+            word-break: break-word;
+            line-height: 1.3;
+        }
+
+        @media (max-width: 640px) {
+            .modal-grid {
+                grid-template-columns: 1fr;
+                gap: 0.625rem;
+            }
+            
+            .modal-content {
+                max-height: 85vh;
+            }
+            
+            .modal-sheet {
+                padding: 1.25rem;
+                border-radius: 1.25rem;
+            }
+            
+            .modal-header-bg {
+                padding: 1.5rem 1.5rem 1.25rem 1.5rem;
+                margin: -1.25rem -1.25rem 1.25rem -1.25rem;
+            }
+            
+            .modal-body {
+                margin: -1.25rem -1.25rem -1.25rem -1.25rem;
+                padding: 1.25rem;
+            }
+            
+            .modal-logo img {
+                width: 56px;
+                height: 56px;
+            }
+            
+            .modal-header-title h2 {
+                font-size: 1.25rem;
+            }
+            
+            .modal-field-box {
+                padding: 0.875rem;
+                min-height: 75px;
+            }
+            
+            .modal-field-icon-box {
+                width: 2rem;
+                height: 2rem;
+            }
+            
+            .modal-field-icon-box svg {
+                width: 1rem;
+                height: 1rem;
+            }
+            
+            .modal-field-label-box {
+                font-size: 0.625rem;
+            }
+            
+            .modal-field-value-box {
+                font-size: 0.8125rem;
+            }
+        }
+
+        .modal-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+            margin: 2rem 0;
+        }
+
+        .modal-totals {
+            background: linear-gradient(135deg, #f8fafc, #dbeafe);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .modal-totals-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .modal-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.875rem;
+            padding-bottom: 0.875rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-total-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .modal-total-label {
+            font-size: 0.875rem;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .modal-total-value {
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .modal-total-value.blue {
+            color: #3b82f6;
+        }
+
+        .modal-total-value.green {
+            color: #10b981;
+        }
+
+        .modal-total-row.paid {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .modal-total-row.paid svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: #10b981;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            max-width: 48rem;
+            margin: 0 auto;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        .empty-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            margin-bottom: 1.5rem;
+            border: 2px solid #e2e8f0;
+        }
+        
+        .empty-icon svg {
+            width: 2rem;
+            height: 2rem;
+            color: var(--foreground-muted);
+        }
+        
+        .empty-state h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--foreground);
+        }
+        
+        .empty-state p {
+            font-size: 1.125rem;
+            color: var(--foreground-muted);
+            font-weight: 500;
+            line-height: 1.6;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.25rem;
+            }
+            
+            .hero-section .subtitle {
+                font-size: 1.125rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.125rem;
+            }
+            
+            .logo-img {
+                width: 56px;
+                height: 56px;
+            }
+            
+            .logo-text h1 {
+                font-size: 1.25rem;
+            }
+            
+            .logo-text p {
+                font-size: 0.875rem;
+            }
+            
+            .header-link {
+                padding: 0.75rem 1.25rem;
+                font-size: 0.875rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .hero-section {
+                padding: 3rem 0 2rem;
+                margin: -3rem -1rem 2rem -1rem;
+                border-radius: 0 0 2rem 2rem;
+            }
+            
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-section .subtitle {
+                font-size: 1rem;
+            }
+            
+            .search-container {
+                padding: 1.5rem;
+            }
+            
+            input {
+                font-size: 1rem;
+                padding: 0.875rem 2.5rem 0.875rem 1rem;
+            }
+            
+            button {
+                padding: 0.875rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="https://i.ibb.co/HTyGwGhP/TUMSIN-FONDO-1024-X1024.png" alt="TeEchoUnaMano Logo" class="logo-img">
+                    <div class="logo-text">
+                        <h1>TeEchoUnaMano TUM</h1>
+                        <p>Servicios de Limpieza Profesional</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <a href="https://teechounamano.github.io/Soporte/" target="_blank" rel="noopener noreferrer" class="header-link support-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        Soporte TUM
+                    </a>
+                    <a href="https://teechounamano.github.io/Soporte/" target="_blank" rel="noopener noreferrer" class="header-link whatsapp-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893c0-3.189-1.248-6.189-3.515-8.444"/>
+                        </svg>
+                        WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="title-section">
+                
+                <h1>Gestión de Citas TUM</h1>
+                <p class="subtitle">Consulta el estado de tus agendamientos en tiempo real con nuestro sistema profesional</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Statistics Section - OPTIMIZED FOR MOBILE -->
+            <div class="stats-section">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalAppointments">0</span>
+                    <span class="stat-label">Citas Totales</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="completedAppointments">0</span>
+                    <span class="stat-label">Completadas</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="onTimeAppointments">0</span>
+                    <span class="stat-label">En Hora</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="satisfactionRate">100%</span>
+                    <span class="stat-label">Realizado</span>
+                </div>
+            </div>
+
+            <!-- Search Form -->
+            <div class="search-form">
+                <div class="search-header">
+                    <h3>Verifica tu Cita</h3>
+                    <p>Ingresa tu código único para consultar el estado</p>
+                </div>
+                <form id="searchForm" class="search-container">
+                    <div class="input-wrapper">
+                        <input type="text" id="searchInput" placeholder="Ingresa tu código de 8 dígitos" required>
+                        <div class="clear-button" id="clearButton">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </div>
+                    </div>
+                    <button type="submit" id="searchButton">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    Verificar Cita
+                    </button>
+                </form>
+                <div class="search-footer">
+                    <p>¿No tienes tu código? <a href="https://teechounamano.github.io/Soporte/" target="_blank">Solicítalo por WhatsApp</a></p>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div id="errorMessage" class="error-message hidden"></div>
+
+            <!-- Records Grid -->
+            <div id="recordsContainer" class="hidden">
+                <div class="records-grid">
+                    <!-- Main Record -->
+                    <div>
+                        <!-- Added section-badges container for fluorescent EN HORA badge -->
+                        <div class="section-title">
+                            <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <h2>Última Entrada</h2>
+                            <div class="section-badges" id="sectionBadges"></div>
+                        </div>
+                        <div id="mainRecord"></div>
+                    </div>
+
+                    <!-- Other Records -->
+                    <div>
+                        <div class="section-title">
+                            <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v16"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <h2>Registros Anteriores</h2>
+                            <span id="recordCount" style="margin-left: auto; font-size: 0.875rem; color: var(--foreground-muted);"></span>
+                        </div>
+                        <div id="otherRecords"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state">
+                <div class="empty-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </div>
+                <h3>Comienza tu búsqueda</h3>
+                <p>¿Necesitas tu código? Solicítalo por WhatsApp en (Soporte TUM)</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal -->
+    <div id="modalOverlay" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-sheet">
+                <div class="close-button" onclick="closeModal()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+                
+                <div id="modalBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // MANTENIENDO LA CONEXIÓN ORIGINAL QUE FUNCIONA
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwJObvioLWCc1ChDBwj3Kag77whhtdzT8TzwxB9zUgD4ECV9avQ717vl6uh7wGmvWkR/exec';
+        let allRecords = [];
+
+        // Función para actualizar estadísticas
+        function updateStatistics(records) {
+            const total = records.length;
+            const completed = records.filter(record => 
+                record.data['Realizado'] === 'TRUE' || record.data['Realizado'] === true
+            ).length;
+            const onTime = records.filter(record => 
+                record.data['En Hora'] === 'TRUE' || record.data['En Hora'] === true
+            ).length;
+            
+            document.getElementById('totalAppointments').textContent = total;
+            document.getElementById('completedAppointments').textContent = completed;
+            document.getElementById('onTimeAppointments').textContent = onTime;
+            
+            const satisfaction = total > 0 ? Math.round((completed / total) * 100) : 100;
+            document.getElementById('satisfactionRate').textContent = satisfaction + '%';
+        }
+
+        const searchInput = document.getElementById('searchInput');
+        const clearButton = document.getElementById('clearButton');
+        
+        // Show/hide clear button based on input content
+        searchInput.addEventListener('input', function() {
+            if (this.value.trim().length > 0) {
+                clearButton.classList.add('visible');
+            } else {
+                clearButton.classList.remove('visible');
+            }
+        });
+        
+        // Clear input when clear button is clicked
+        clearButton.addEventListener('click', function() {
+            searchInput.value = '';
+            clearButton.classList.remove('visible');
+            searchInput.focus();
+        });
+
+        // Format date
+        function formatDate(dateStr) {
+            if (!dateStr) return 'Fecha no disponible';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('es-ES', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Get status
+        function getStatus(data) {
+            const enHora = data['En Hora'] === 'TRUE' || data['En Hora'] === true;
+            const realizado = data['Realizado'] === 'TRUE' || data['Realizado'] === true;
+
+            if (realizado) return { label: 'Realizado', class: 'realizado', color: 'text-blue-600' };
+            if (enHora) return { label: 'En Hora', class: 'en-hora', color: 'text-emerald-600' };
+            return { label: 'Pendiente', class: 'pendiente', color: 'text-yellow-600' };
+        }
+
+        // Check if paid
+        function isPaid(data) {
+            const realizado = data['Realizado'] === 'TRUE' || data['Realizado'] === true;
+            const pagoAdelantado = parseFloat(data['RC_Pagos_Total']) || 0;
+            const total = parseFloat(data['A_Total']) || 0;
+            return realizado && pagoAdelantado >= total;
+        }
+
+        // Create main record card
+        function createMainRecordCard(record, arrayIndex) {
+            const cliente = record.data['RS_Nombre'] || '-';
+            const codigo = record.data['RS_Id_Susc'] || '-';
+            const fecha = record.data['A_Fecha'] || '-';
+            const horaServicio = record.data['A_Check-IN'] || '-';
+            const status = getStatus(record.data);
+            
+            return `
+                <div class="record-card featured" onclick="openModal(${arrayIndex})">
+                    <!-- Added badges positioned on the card border -->
+                    <div class="recent-badge">Más Reciente</div>
+                    
+                    <!-- Added fluorescent EN HORA badge on card border when status is en-hora -->
+                    ${status.class === 'en-hora' ? `
+                    <div class="en-hora-badge">
+                        <div class="pulse-dot-small"></div>
+                        <span>EN HORA</span>
+                    </div>
+                    ` : ''}
+                    
+                    <!-- Added padding-top to create space below the badge -->
+                    <div style="margin-bottom: 0.75rem; padding-top: 1.5rem;">
+                        <div class="field-row">
+                            <div class="field-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <line x1="4" y1="9" x2="20" y2="9"></line>
+                                    <line x1="4" y1="15" x2="20" y2="15"></line>
+                                    <line x1="10" y1="3" x2="8" y2="21"></line>
+                                    <line x1="16" y1="3" x2="14" y2="21"></line>
+                                </svg>
+                            </div>
+                            <div class="field-content">
+                                <div class="field-label">Código</div>
+                                <div class="field-value" style="font-family: monospace;">${codigo}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="field-row">
+                            <div class="field-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="field-content">
+                                <div class="field-label">Cliente</div>
+                                <div class="field-value">${cliente}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="field-row">
+                            <div class="field-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                            </div>
+                            <div class="field-content">
+                                <div class="field-label">Fecha</div>
+                                <div class="field-value">${formatDate(fecha)}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="field-row">
+                            <div class="field-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <div class="field-content">
+                                <div class="field-label">Hora Servicio</div>
+                                <div class="field-value">${horaServicio}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="view-details">
+                        <span>Ver detalles completos</span>
+                        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Create compact record card
+        function createCompactRecordCard(record, arrayIndex) {
+            const cliente = record.data['RS_Nombre'] || '-';
+            const fecha = record.data['A_Fecha'] || '-';
+            const status = getStatus(record.data);
+
+            return `
+                <div class="record-card compact" onclick="openModal(${arrayIndex})">
+                    <div class="compact-content">
+                        <div class="compact-info">
+                            <div class="compact-status ${status.color}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>${status.label}</span>
+                            </div>
+                            <div class="compact-name">${cliente}</div>
+                            <div class="compact-date">${formatDate(fecha)}</div>
+                        </div>
+                        <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openModal(index) {
+            const record = allRecords[index];
+            const cliente = record.data['RS_Nombre'] || '-';
+            const codigo = record.data['RS_Id_Susc'] || '-';
+            const fecha = record.data['A_Fecha'] || '-';
+            const celular = record.data['RS_Celular'] || '-';
+            const horaServicio = record.data['A_Check-IN'] || '-';
+            const pagoAdelantado = parseFloat(record.data['RC_Pagos_Total']) || 0;
+            const total = parseFloat(record.data['A_Total']) || 0;
+            const status = getStatus(record.data);
+
+            // MODIFICACIÓN: Nuevo diseño con 2 campos por fila
+            document.getElementById('modalBody').innerHTML = `
+                <div class="modal-header-bg">
+                    <div class="modal-logo">
+                        <img src="https://i.ibb.co/HTyGwGhP/TUMSIN-FONDO-1024-X1024.png" alt="TeEchoUnaMano Logo">
+                    </div>
+                    
+                    <div class="modal-header-title">
+                        <h2>Agenda TUM</h2>
+                        <p>Servicio de Limpieza Profesional</p>
+                    </div>
+                    
+                    <div class="modal-status-center">
+                        <div class="modal-status-badge-large ${status.class}">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            ${status.label}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-body">
+                    <!-- MODIFICACIÓN PRINCIPAL: Grid de 2 columnas para mostrar 2 campos por fila -->
+                    <div class="modal-grid">
+                        <!-- Fila 1: Código y Cliente -->
+                        <div class="modal-field-box">
+                            <div class="modal-field-icon-box">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <line x1="4" y1="9" x2="20" y2="9"></line>
+                                    <line x1="4" y1="15" x2="20" y2="15"></line>
+                                    <line x1="10" y1="3" x2="8" y2="21"></line>
+                                    <line x1="16" y1="3" x2="14" y2="21"></line>
+                                </svg>
+                            </div>
+                            <div class="modal-field-text">
+                                <div class="modal-field-label-box">CÓDIGO</div>
+                                <div class="modal-field-value-box" style="font-family: monospace;">${codigo}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-field-box">
+                            <div class="modal-field-icon-box">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="modal-field-text">
+                                <div class="modal-field-label-box">CLIENTE</div>
+                                <div class="modal-field-value-box">${cliente}</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Fila 2: Fecha y Hora -->
+                        <div class="modal-field-box">
+                            <div class="modal-field-icon-box">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                            </div>
+                            <div class="modal-field-text">
+                                <div class="modal-field-label-box">FECHA</div>
+                                <div class="modal-field-value-box">${formatDate(fecha)}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-field-box">
+                            <div class="modal-field-icon-box">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <div class="modal-field-text">
+                                <div class="modal-field-label-box">HORA</div>
+                                <div class="modal-field-value-box">${horaServicio}</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Fila 3: Celular y un campo vacío para mantener la estructura de 2 columnas -->
+                        <div class="modal-field-box">
+                            <div class="modal-field-icon-box">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                            </div>
+                            <div class="modal-field-text">
+                                <div class="modal-field-label-box">CELULAR</div>
+                                <div class="modal-field-value-box">${celular}</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Campo adicional si necesitas mostrar más información -->
+                        <!--
+                        <div class="modal-field-box">
+                            <div class="modal-field-icon-box">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 8v4l3 3"></path>
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                </svg>
+                            </div>
+                            <div class="modal-field-text">
+                                <div class="modal-field-label-box">DURACIÓN</div>
+                                <div class="modal-field-value-box">2 horas</div>
+                            </div>
+                        </div>
+                        -->
+                    </div>
+                    
+                    <div class="modal-totals">
+                        <div class="modal-totals-label">Detalle Pago</div>
+                        
+                        <div class="modal-total-row">
+                            <span class="modal-total-label">Total del Servicio</span>
+                            <span class="modal-total-value blue">$${total.toFixed(2)}</span>
+                        </div>
+                        
+                        <div class="modal-total-row paid">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <span class="modal-total-label">Pago Realizado</span>
+                            <span class="modal-total-value green">$${pagoAdelantado.toFixed(2)}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('modalOverlay').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.add('hidden');
+            document.body.style.overflow = 'unset';
+        }
+
+        // Close modal on overlay click
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // MANTENIENDO LA FUNCIÓN DE BÚSQUEDA ORIGINAL QUE FUNCIONA
+        // Handle search
+        document.getElementById('searchForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const searchValue = document.getElementById('searchInput').value.trim();
+            if (!searchValue) return;
+
+            const searchButton = document.getElementById('searchButton');
+            const errorMessage = document.getElementById('errorMessage');
+            const recordsContainer = document.getElementById('recordsContainer');
+            const emptyState = document.getElementById('emptyState');
+
+            // Show loading
+            searchButton.disabled = true;
+            searchButton.innerHTML = `
+                <div class="spinner"></div>
+                Buscando...
+            `;
+            errorMessage.classList.add('hidden');
+            recordsContainer.classList.add('hidden');
+            emptyState.classList.add('hidden');
+
+            try {
+                const url = `${SCRIPT_URL}?RS_Id_Susc=${encodeURIComponent(searchValue)}`;
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error(result.message || 'Error al buscar datos');
+                }
+
+                const data = result.data || [];
+
+                // Parse and sort records
+                allRecords = data.map((item, index) => {
+                    const dateStr = item['A_Fecha'];
+                    let date = null;
+                    if (dateStr) {
+                        const parsedDate = new Date(dateStr);
+                        if (!isNaN(parsedDate.getTime())) {
+                            date = parsedDate.toISOString();
+                        }
+                    }
+                    return {
+                        data: item,
+                        date: date,
+                        id: `record-${index}`,
+                        index: index
+                    };
+                });
+
+                allRecords.sort((a, b) => {
+                    if (!a.date && !b.date) return 0;
+                    if (!a.date) return 1;
+                    if (!b.date) return -1;
+                    return new Date(b.date).getTime() - new Date(a.date).getTime();
+                });
+
+                if (allRecords.length === 0) {
+                    errorMessage.textContent = 'No se encontraron resultados';
+                    errorMessage.classList.remove('hidden');
+                } else {
+                    // Display records
+                    const mainRecord = allRecords[0];
+                    const otherRecords = allRecords.slice(1);
+
+                    document.getElementById('mainRecord').innerHTML = createMainRecordCard(mainRecord, 0);
+                    document.getElementById('recordCount').textContent = otherRecords.length;
+                    
+                    if (otherRecords.length > 0) {
+                        document.getElementById('otherRecords').innerHTML = otherRecords.map((record, i) => 
+                            createCompactRecordCard(record, i + 1)
+                        ).join('');
+                    } else {
+                        document.getElementById('otherRecords').innerHTML = `
+                            <div style="border: 1px dashed var(--border); border-radius: 0.5rem; padding: 2rem; text-align: center;">
+                                <p style="font-size: 0.875rem; color: var(--foreground-muted);">No hay registros anteriores</p>
+                            </div>
+                        `;
+                    }
+
+                    // Update statistics
+                    updateStatistics(allRecords);
+
+                    recordsContainer.classList.remove('hidden');
+                }
+            } catch (err) {
+                errorMessage.textContent = err.message || 'Error al conectar con Google Sheets';
+                errorMessage.classList.remove('hidden');
+            } finally {
+                // Reset button
+                searchButton.disabled = false;
+                searchButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    Verificar Cita
+                `;
+            }
+        });
+
+        // Inicializar estadísticas
+        updateStatistics([]);
+    </script>
+</body>
+</html>
