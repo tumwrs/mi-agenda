@@ -3,389 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeEchoUnaMano TUM - Gestión</title>
-    <!-- Fuentes nativas del sistema para look Apple -->
+    <link rel="icon" type="image/png" href="https://i.ibb.co/HTyGwGhP/TUMSIN-FONDO-1024-X1024.png">
+    <title>Verificador de Agendamientos - TeEchoUnaMano TUM</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
     <style>
-        :root {
-            /* Paleta Apple / Grises */
-            --bg-apple: #F5F5F7;
-            --surface-apple: #FFFFFF;
-            --text-primary: #1D1D1F;
-            --text-secondary: #86868B;
-            --border-subtle: #D2D2D7;
-            
-            /* Acentos */
-            --accent-blue: #0071E3; /* Azul Apple */
-            --wa-green: #25D366;   /* Verde WhatsApp (sutil) */
-            
-            /* Sombras y Radios */
-            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.04);
-            --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
-            --radius-apple: 18px;
-            --radius-input: 12px;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box; /* Crucial para evitar desbordamiento */
-            -webkit-font-smoothing: antialiased; /* Suavizado de texto Mac/iOS */
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-apple);
-            color: var(--text-primary);
-            line-height: 1.5;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-        }
-
-        /* --- HEADER (Estilo Apple Minimalista) --- */
-        header {
-            background-color: rgba(255, 255, 255, 0.85); /* Glassmorphism sutil */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-subtle);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            width: 100%;
-        }
-
-        .brand-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: -0.01em;
-        }
-
-        .brand-icon {
-            color: var(--text-primary);
-            font-size: 1.4rem;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        /* Botones Estilo Apple (Contornos suaves, texto negro) */
-        .btn-apple {
-            background-color: var(--surface-apple);
-            border: 1px solid var(--border-subtle);
-            color: var(--text-primary);
-            padding: 0.5rem 1rem;
-            border-radius: 20px; /* Pill shape */
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-        }
-
-        .btn-apple:hover {
-            background-color: var(--text-primary);
-            color: var(--surface-apple);
-        }
-
-        /* Variante sutil para WhatsApp */
-        .btn-wa-subtle {
-            color: var(--wa-green);
-            border-color: rgba(37, 211, 102, 0.3);
-        }
-        .btn-wa-subtle:hover {
-            background-color: var(--wa-green);
-            color: white;
-            border-color: var(--wa-green);
-        }
-
-        /* --- CONTENEDOR PRINCIPAL --- */
-        main {
-            flex: 1;
-            width: 100%;
-            max-width: 800px; /* Ancho controlado estilo Apple */
-            margin: 0 auto;
-            padding: 3rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .section-title h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 0.5rem;
-        }
-
-        .section-title p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            font-weight: 400;
-        }
-
-        /* --- ESTADÍSTICAS (Ocultas si no hay datos) --- */
-        #stats-container {
-            display: none; /* Oculto por defecto */
-            grid-template-columns: repeat(2, 1fr); /* Grid 2 columnas estilo dashboard */
-            gap: 1rem;
-            width: 100%;
-        }
-
-        .stat-card {
-            background-color: var(--surface-apple);
-            border-radius: var(--radius-apple);
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: var(--shadow-card);
-            transition: transform 0.2s ease;
-            display: flex;
-            flex-direction: column;
             justify-content: center;
-            align-items: center;
-        }
-
-        .stat-card:hover {
-            transform: scale(1.02);
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            color: var(--text-primary);
-            line-height: 1;
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 600;
-        }
-
-        /* Color sutil para la tasa de éxito */
-        .text-accent { color: var(--accent-blue); }
-
-        /* --- VERIFICACIÓN --- */
-        .verification-card {
-            background-color: var(--surface-apple);
-            border-radius: var(--radius-apple);
-            padding: 2.5rem;
-            box-shadow: var(--shadow-card);
-            width: 100%;
-            text-align: center;
-        }
-
-        .verification-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-        }
-
-        /* Input Estilo iOS (Sin borde, fondo gris) */
-        .input-ios {
-            width: 100%;
-            padding: 1rem 1.2rem;
-            background-color: var(--bg-apple);
-            border: 1px solid transparent;
-            border-radius: var(--radius-input);
-            font-size: 1rem;
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-            outline: none;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-
-        .input-ios:focus {
-            background-color: #E8E8ED;
-            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.15); /* Focus azul sutil */
-        }
-
-        /* Botón Principal Azul Apple */
-        .btn-primary {
-            width: 100%;
             padding: 1rem;
-            background-color: var(--accent-blue);
-            color: white;
-            border: none;
-            border-radius: var(--radius-input);
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
         }
 
-        .btn-primary:hover {
-            background-color: #005bb5;
+        .glass-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            width: 100%;
+            max-width: 480px;
+            padding: 2.5rem;
         }
 
-        .divider {
-            margin: 2rem 0;
-            position: relative;
-            height: 1px;
-            background-color: var(--border-subtle);
-        }
-        .divider span {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: var(--surface-apple);
-            padding: 0 1rem;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            font-weight: 500;
+        .input-minimal {
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
         }
 
-        .link-text {
-            color: var(--accent-blue);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
+        .input-minimal:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            outline: none;
         }
-        .link-text:hover { text-decoration: underline; }
 
-        /* --- RESPONSIVE / FIX OVERFLOW --- */
-        @media (max-width: 600px) {
-            header {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1rem;
-            }
-            #stats-container {
-                grid-template-columns: 1fr; /* Una columna en móvil */
-            }
-            .verification-card {
-                padding: 1.5rem;
-            }
+        .btn-professional {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
+
+        .btn-professional:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-professional:active { transform: translateY(0); }
+
+        /* Spinner de carga */
+        .spinner {
+            width: 1.25rem; height: 1.25rem;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
-    <!-- Iconos (usando SVG inline para máximo control y mínimo peso, o CDN ligero) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Header -->
-    <header>
-        <div class="brand-container">
-            <i class="fa-solid fa-broom brand-icon"></i>
-            <span>TeEchoUnaMano TUM</span>
-        </div>
-        <div class="header-actions">
-            <button class="btn-apple">
-                Soporte TUM
+    <div class="glass-container text-center">
+        <img src="https://i.ibb.co/HTyGwGhP/TUMSIN-FONDO-1024-X1024.png" alt="Logo" class="w-24 h-24 mx-auto mb-6">
+        
+        <h1 class="text-2xl font-extrabold text-slate-800 mb-2">Consulta de Citas</h1>
+        <p class="text-slate-500 text-sm mb-8 font-medium">Ingresa tu documento para verificar el estado</p>
+
+        <form id="searchForm" class="space-y-4">
+            <div class="relative">
+                <input 
+                    type="text" 
+                    id="dniInput" 
+                    placeholder="Número de DNI / Documento" 
+                    class="w-full px-5 py-4 rounded-xl bg-white input-minimal text-slate-700 font-semibold"
+                    required
+                >
+            </div>
+            
+            <button 
+                type="submit" 
+                id="searchButton" 
+                class="w-full btn-professional text-white font-bold py-4 rounded-xl flex items-center justify-center gap-3 tracking-wide"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                VERIFICAR CITA
             </button>
-            <!-- WhatsApp Sutil: Contorno gris, icono verde -->
-            <button class="btn-apple btn-wa-subtle">
-                <i class="fa-brands fa-whatsapp"></i> WhatsApp
-            </button>
-        </div>
-    </header>
+        </form>
 
-    <main>
-        <!-- Título -->
-        <div class="section-title">
-            <h2>Gestión de Citas</h2>
-            <p>Monitorea tus servicios en tiempo real</p>
+        <div id="errorMessage" class="hidden mt-6 p-4 bg-red-50 border border-red-100 text-red-600 text-xs rounded-xl font-bold"></div>
+
+        <div id="recordsContainer" class="hidden mt-8 text-left space-y-4">
+            <div id="featuredRecord"></div>
+            <div id="otherRecords" class="space-y-3"></div>
         </div>
 
-        <!-- Estadísticas (Grid 2x2 estilo Apple) -->
-        <div id="stats-container">
-            <div class="stat-card">
-                <div class="stat-value" id="count-confirmadas">0</div>
-                <div class="stat-label">Confirmadas</div>
+        <div id="statsContainer" class="flex justify-center gap-6 mt-10 pt-6 border-t border-slate-100">
+            <div>
+                <p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Total</p>
+                <p id="totalConsults" class="text-lg font-bold text-slate-700">0</p>
             </div>
-            <div class="stat-card">
-                <div class="stat-value" id="count-pendientes" style="color: #FF9500;">0</div>
-                <div class="stat-label">Pendientes</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" id="count-completadas" style="color: #34C759;">0</div>
-                <div class="stat-label">Completadas</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value text-accent" id="rate-exito">0%</div>
-                <div class="stat-label">Tasa de Éxito</div>
+            <div>
+                <p class="text-[10px] uppercase font-bold text-slate-400 tracking-widest">Hoy</p>
+                <p id="todayConsults" class="text-lg font-bold text-blue-600">0</p>
             </div>
         </div>
-
-        <!-- Verificación -->
-        <div class="verification-card">
-            <h3>Verifica tu Cita</h3>
-            <form onsubmit="event.preventDefault(); alert('Verificando...');">
-                <input type="text" class="input-ios" placeholder="Código de cita (Ej: TUM-123)" required>
-                <button type="submit" class="btn-primary">Verificar Estado</button>
-            </form>
-
-            <div class="divider"><span>o</span></div>
-
-            <a href="#" class="link-text">
-                Solicitar código por WhatsApp
-            </a>
-        </div>
-    </main>
+    </div>
 
     <script>
-        // --- LÓGICA DE DATOS Y VISIBILIDAD ---
-        
-        // Simulación de base de datos
-        // Si dejas este array vacío [], las tarjetas de estadísticas NO aparecerán.
-        // Si agregas datos, aparecerán automáticamente.
-        const agendamientos = [
-            // { estado: 'completada' }, // Descomenta para probar la visibilidad
-            // { estado: 'pendiente' }
-        ];
+        // --- LOGICA EXACTA DE TU ARCHIVO ORIGINAL ---
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby7I_Xj8z06M011uO_Mv-mN-j1tYc48n5C6-vC_17E1mSgXoIAtf2p_S5XyvGgK7-Y/exec';
 
-        function gestionarEstadisticas() {
-            const container = document.getElementById('stats-container');
-            const elConfirmadas = document.getElementById('count-confirmadas');
-            const elPendientes = document.getElementById('count-pendientes');
-            const elCompletadas = document.getElementById('count-completadas');
-            const elTasa = document.getElementById('rate-exito');
-
-            // Cálculos
-            const total = agendamientos.length;
-            const completadas = agendamientos.filter(c => c.estado === 'completada').length;
-            const pendientes = agendamientos.filter(c => c.estado === 'pendiente').length;
-            const confirmadas = total; // Asumimos que el total es confirmado
-            
-            let tasa = 0;
-            if(total > 0) tasa = Math.round((completadas / total) * 100);
-
-            // Lógica de mostrar/ocultar
-            if (total > 0) {
-                container.style.display = 'grid';
-                elConfirmadas.innerText = confirmadas;
-                elPendientes.innerText = pendientes;
-                elCompletadas.innerText = completadas;
-                elTasa.innerText = tasa + '%';
-            } else {
-                container.style.display = 'none'; // Oculto si no hay nada
-            }
+        function updateStatistics(records) {
+            const total = records.length;
+            const today = new Date().toLocaleDateString();
+            const todayCount = records.filter(r => r.FECHA_CONSULTA === today).length;
+            document.getElementById('totalConsults').textContent = total;
+            document.getElementById('todayConsults').textContent = todayCount;
         }
 
-        // Iniciar al cargar
-        document.addEventListener('DOMContentLoaded', gestionarEstadisticas);
+        document.getElementById('searchForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const dni = document.getElementById('dniInput').value.trim();
+            const searchButton = document.getElementById('searchButton');
+            const errorMessage = document.getElementById('errorMessage');
+            const recordsContainer = document.getElementById('recordsContainer');
+
+            // UI Reset
+            errorMessage.classList.add('hidden');
+            recordsContainer.classList.add('hidden');
+            searchButton.disabled = true;
+            searchButton.innerHTML = '<div class="spinner"></div><span>BUSCANDO...</span>';
+
+            try {
+                // Fetch con tu URL original
+                const response = await fetch(`${WEB_APP_URL}?dni=${dni}`);
+                
+                if (!response.ok) throw new Error('Error en la respuesta del servidor');
+                
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    const allRecords = data.records;
+                    
+                    if (allRecords.length === 0) {
+                        throw new Error('No se encontraron registros para este documento.');
+                    }
+
+                    // Renderizado de la tarjeta principal
+                    const featured = allRecords[0];
+                    document.getElementById('featuredRecord').innerHTML = `
+                        <div class="bg-white p-5 rounded-2xl border border-blue-100 shadow-sm">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-[10px] font-bold text-blue-500 uppercase tracking-widest">Cita Encontrada</span>
+                                <span class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-black">${featured.ESTADO || 'ACTIVO'}</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 text-lg uppercase">${featured.NOMBRE || 'SIN NOMBRE'}</h3>
+                            <div class="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-slate-50">
+                                <div>
+                                    <p class="text-[9px] font-bold text-slate-400 uppercase">Fecha</p>
+                                    <p class="text-sm font-bold text-slate-700">${featured.FECHA || '-'}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[9px] font-bold text-slate-400 uppercase">Hora</p>
+                                    <p class="text-sm font-bold text-slate-700">${featured.HORA || '-'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Registros adicionales si existen
+                    if (allRecords.length > 1) {
+                        document.getElementById('otherRecords').innerHTML = allRecords.slice(1).map(r => `
+                            <div class="bg-slate-50/50 p-3 rounded-lg flex justify-between items-center border border-slate-100">
+                                <span class="text-xs font-bold text-slate-600">${r.FECHA}</span>
+                                <span class="text-[10px] font-bold text-slate-400">${r.ESTADO}</span>
+                            </div>
+                        `).join('');
+                    } else {
+                        document.getElementById('otherRecords').innerHTML = '';
+                    }
+
+                    updateStatistics(allRecords);
+                    recordsContainer.classList.remove('hidden');
+                } else {
+                    throw new Error(data.message || 'Error desconocido');
+                }
+
+            } catch (err) {
+                console.error(err);
+                errorMessage.textContent = err.message;
+                errorMessage.classList.remove('hidden');
+            } finally {
+                searchButton.disabled = false;
+                searchButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    VERIFICAR CITA`;
+            }
+        });
+
+        // Inicialización
+        updateStatistics([]);
     </script>
 </body>
 </html>
